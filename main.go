@@ -24,6 +24,7 @@ var (
 	sqlPath    string
 	verPathes  []string
 	sqlFiles   []string
+	debug      bool
 )
 
 func init() {
@@ -32,7 +33,8 @@ func init() {
 	flag.StringVar(&dbName, "name", "", "db name")
 	flag.StringVar(&dbUser, "user", "root", "db username")
 	flag.StringVar(&dbPassword, "password", "", "db password")
-	flag.StringVar(&sqlPath, "sql", "./sql", "sql path")
+	flag.StringVar(&sqlPath, "source", "./sql", "sql path")
+	flag.BoolVar(&debug, "debug", false, "Debug")
 }
 
 func main() {
@@ -112,7 +114,7 @@ func getDirVerNum(verDir string) int {
 }
 
 func exists(path string) error {
-	_, err := os.Stat(path)
+	_, err := os.Stat(path) //os.Stat获取文件信息
 	if err != nil {
 		if os.IsExist(err) {
 			return nil
@@ -128,6 +130,10 @@ func isDir(path string) bool {
 		return false
 	}
 	return s.IsDir()
+}
+
+func isFile(path string) bool {
+	return !isDir(path)
 }
 
 func getAllVerDirs(path string, info os.FileInfo, err error) error {
@@ -155,15 +161,23 @@ func execSQLFiles(files []string, ver int, db *sql.DB) error {
 			tx.Rollback()
 			return err
 		}
-		stmt, err := tx.Prepare(string(sqlBytes))
-		if err != nil {
-			tx.Rollback()
-			return err
-		}
-		defer stmt.Close()
-		if _, err := stmt.Exec(); err != nil {
-			tx.Rollback()
-			return err
+		for _, sql := range strings.Split(string(sqlBytes), ";") {
+			if sql == "" || len(sql) < 3 {
+				continue
+			}
+			if debug {
+				fmt.Printf("exec %s\n", sql)
+			}
+			stmt, err := tx.Prepare(sql)
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+			defer stmt.Close()
+			if _, err := stmt.Exec(); err != nil {
+				tx.Rollback()
+				return err
+			}
 		}
 	}
 	stmt, err := tx.Prepare("INSERT INTO dbVer (version,addTime) VALUES (?,NOW());")
