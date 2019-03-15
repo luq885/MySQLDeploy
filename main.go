@@ -165,11 +165,18 @@ func execSQLFiles(files []string, ver int, db *sql.DB) error {
 			if sql == "" || len(sql) < 3 {
 				continue
 			}
+			if strings.Contains(strings.ToLower(sql), "commit") {
+				continue
+			}
 			if debug {
 				fmt.Printf("exec %s\n", sql)
 			}
 			stmt, err := tx.Prepare(sql)
 			if err != nil {
+				if strings.Contains(err.Error(), "This command is not supported in the prepared statement protocol yet") {
+					continue
+				}
+				fmt.Println(err.Error())
 				tx.Rollback()
 				return err
 			}
