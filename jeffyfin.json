@@ -2005,7 +2005,7 @@
                 "version": "5.0.0.0",
                 "changelog": "- Fix Bigscreen compatibility issues (#83) @Nullcaller\n- Add additional profile logging (#93) @disgustipated\n- Fix TTL not following SsdpConstants (#88) @Nullcaller",
                 "targetAbi": "10.10.0.0",
-                "sourceUrl": "https://repo.jellyfin.org/files/plugin/dlna/dlna_5.0.0.0.zip",
+                "sourceUrl": "https://ghp.ci/https://raw.githubusercontent.com/luq885/MySQLDeploy/refs/heads/master/dlna_5.0.0.0.zip",
                 "checksum": "4f40f49f8b402a13ff90dc5f1aea5abd",
                 "timestamp": "2024-11-03T15:14:46Z"
             },
