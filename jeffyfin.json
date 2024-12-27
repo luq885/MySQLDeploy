@@ -2005,7 +2005,7 @@
                 "version": "6.0.0.0",
                 "changelog": "- fix: add the icons to the compiled resources (#109) (#114) @FelixPetriconi\n- fix: adjusted typo in configuration page title (#112) @shindai\n- Only split user agent if it can be split (#95) @Shadowghost",
                 "targetAbi": "10.10.3.0",
-                "sourceUrl": "https://repo.jellyfin.org/files/plugin/dlna/dlna_6.0.0.0.zip",
+                "sourceUrl": "https://ghgo.xyz/https://github.com/luq885/MySQLDeploy/raw/refs/heads/master/dlna_6.0.0.0.zip",
                 "checksum": "f553041c6685d619d4eeb8927bd85c14",
                 "timestamp": "2024-12-19T22:17:07Z"
             },
